@@ -33,10 +33,10 @@ extern char** localIPaddrs;
 extern int numberOfAddresses;
 #define NUMCONNECTIONS 1
 
-
 //gets the list of IP addresses
 char** getIPAddresses();
 int getPartyNum(char* filename);
+enum class LastCall { None, Send, Recv };
 
 
 class CommunicationObject
@@ -47,6 +47,7 @@ private:
 	size_t numberOfSends = 0;
 	size_t numberOfRecvs = 0;
 	bool measurement = false;
+	LastCall last_call = LastCall::None;
 
 public:
 #if (LOG_LAYERWISE)
@@ -98,7 +99,10 @@ public:
 		if (measurement)
 		{
 			bytesSent += size;
-			numberOfSends++;
+			if (last_call != LastCall::Send) {
+			    last_call = LastCall::Send;
+			    numberOfSends++;
+			}
 		}
 	}
 
@@ -107,7 +111,10 @@ public:
 		if (measurement)
 		{
 			bytesReceived += size;
-			numberOfRecvs++;
+			if (last_call != LastCall::Recv) {
+			    last_call = LastCall::Recv;
+			    numberOfRecvs++;
+			}
 		}
 	}
 

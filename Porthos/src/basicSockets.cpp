@@ -24,7 +24,7 @@
 using namespace std;
 using namespace std::chrono;
 
-#define bufferSize 256
+#define bufferSize 1024*16
 
 /*GLOBAL VARIABLES - LIST OF IP ADDRESSES*/
 char** localIPaddrs;

@@ -13,6 +13,7 @@ project(Porthos)
 set(NAME "Porthos")
 
 find_package(OpenMP REQUIRED)
+find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(Boost 1.65 REQUIRED)
 
@@ -24,18 +25,20 @@ target_include_directories(Porthos-Protocols
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../lib_eigen/
 	${OPENSSL_INCLUDE_DIR})
 
-target_link_libraries(Porthos-Protocols
-	PUBLIC OpenMP::OpenMP_CXX
-	${OPENSSL_LIBRARIES})
+target_link_libraries(Porthos-Protocols PUBLIC Boost::boost OpenMP::OpenMP_CXX ${OPENSSL_LIBRARIES})
 
 macro (add_network _name)
 	add_executable(${_name} ${CMAKE_CURRENT_SOURCE_DIR}/example_neural_nets/main${_name}.cpp)
-	target_link_libraries(${_name} Porthos-Protocols -lrt -lboost_system)
+	target_link_libraries(${_name} Porthos-Protocols Boost::boost OpenMP::OpenMP_CXX Threads::Threads)
 endmacro()
 
 target_compile_options(Porthos-Protocols
 	PUBLIC "-pthread;-Wall;-march=native;-msse4.1;-maes;-mpclmul;-mrdseed;-fpermissive;-fpic;-std=c++17;-w;-O3;-fopenmp;")
+#target_compile_options(Porthos-Protocols
+#	PUBLIC "-pthread;-Wall;-march=native;-msse4.1;-maes;-mpclmul;-mrdseed;-fpermissive;-fpic;-std=c++17;-w;-O3")
+
 
 add_network(DenseNet121)
 add_network(ResNet50)
 add_network(SqNetImgNet)
+add_network(Vgg)

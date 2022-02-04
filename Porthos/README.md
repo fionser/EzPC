@@ -1,3 +1,6 @@
+# NOTE
+This repo is modified to match the comparison with Cheetah.
+
 # Introduction
 This folder contains code for Porthos - a semi-honest 3 party secure computation protocol.
 
@@ -20,9 +23,9 @@ cmake ..
 make -j
 ```
 - To run the MPC code for SqueezeNet, ResNet50 or DenseNet121, from Porthos root, use the following commands: (example shown for ResNet50)
-`./party0.sh ResNet50 < ../Athos/Networks/ResNet/ResNet_img.inp`,
-`./party1.sh ResNet50 < ../Athos/Networks/ResNet/ResNet_weights.inp`, and
-`./party2.sh ResNet50`.
+`./party0.sh SqNetImgNet < pretrain/sqnet_input_scale12_pred248.inp`,
+`./party1.sh SqNetImgNet < pretrain/sqnet_model_scale12.inp`, and
+`./party2.sh SqNetImgNet`.
 The above commands make use of fixed-point input files generated from Athos. Please refer to the `README.md` of Athos for instructions on how to generate the same. Also, note that in the scenario of secure inference, `party0.sh` represents the client, which inputs the image, `party1.sh` represents the server, which inputs the model and `party2.sh` represents the helper party which doesn't have any input. The output is learned by `party0`, which represents the client.
 
 # External Code
